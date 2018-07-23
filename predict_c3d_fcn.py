@@ -15,7 +15,7 @@ flags = tf.app.flags
 flags.DEFINE_integer('batch_size',1 , 'Batch size.')
 flags.DEFINE_boolean('output_to_file', True , 'print outputs to files or to the screen')
 FLAGS = flags.FLAGS
-pre_model_save_dir = './models/fcn54'
+pre_model_save_dir = './models/SGD'
 
 def run_testing():
     with tf.Graph().as_default():
@@ -27,17 +27,17 @@ def run_testing():
                         )
         with tf.variable_scope('var_name') as var_scope:
             weights = {
-                  'wc1': _variable_with_weight_decay('wc1', [3, 3, 3, 3, 64], 0.0005),
-                  'wc2': _variable_with_weight_decay('wc2', [3, 3, 3, 64, 128], 0.0005),
-                  'wc3a': _variable_with_weight_decay('wc3a', [3, 3, 3, 128, 256], 0.0005),
-                  'wc3b': _variable_with_weight_decay('wc3b', [3, 3, 3, 256, 256], 0.0005),
-                  'wc4a': _variable_with_weight_decay('wc4a', [3, 3, 3, 256, 512], 0.0005),
-                  'wc4b': _variable_with_weight_decay('wc4b', [3, 3, 3, 512, 512], 0.0005),
-                  'wc5a': _variable_with_weight_decay('wc5a', [3, 3, 3, 512, 512], 0.0005),
-                  'wc5b': _variable_with_weight_decay('wc5b', [3, 3, 3, 512, 512], 0.0005),
-                  'wd1': _variable_with_weight_decay('wd1', [8192, 4096], 0.0005),
-                  'wd2': _variable_with_weight_decay('wd2', [4096, 4096], 0.0005),
-                  'out': _variable_with_weight_decay('wout', [4096, c3d_model.NUM_CLASSES], 0.0005)
+                  'wc1': _variable_with_weight_decay('wc1', [3, 3, 3, 3, 64], 0.005),
+                  'wc2': _variable_with_weight_decay('wc2', [3, 3, 3, 64, 128], 0.005),
+                  'wc3a': _variable_with_weight_decay('wc3a', [3, 3, 3, 128, 256], 0.005),
+                  'wc3b': _variable_with_weight_decay('wc3b', [3, 3, 3, 256, 256], 0.005),
+                  'wc4a': _variable_with_weight_decay('wc4a', [3, 3, 3, 256, 512], 0.005),
+                  'wc4b': _variable_with_weight_decay('wc4b', [3, 3, 3, 512, 512], 0.005),
+                  'wc5a': _variable_with_weight_decay('wc5a', [3, 3, 3, 512, 512], 0.005),
+                  'wc5b': _variable_with_weight_decay('wc5b', [3, 3, 3, 512, 512], 0.005),
+                  #'wd1': _variable_with_weight_decay('wd1', [8192, 4096], 0.005),
+                  #'wd2': _variable_with_weight_decay('wd2', [4096, 4096], 0.005),
+                  #'out': _variable_with_weight_decay('wout', [4096, c3d_model.NUM_CLASSES], 0.005)
                   }
             biases = {
                   'bc1': _variable_with_weight_decay('bc1', [64], 0.000),
@@ -48,33 +48,21 @@ def run_testing():
                   'bc4b': _variable_with_weight_decay('bc4b', [512], 0.000),
                   'bc5a': _variable_with_weight_decay('bc5a', [512], 0.000),
                   'bc5b': _variable_with_weight_decay('bc5b', [512], 0.000),
-                  'bd1': _variable_with_weight_decay('bd1', [4096], 0.000),
-                  'bd2': _variable_with_weight_decay('bd2', [4096], 0.000),
-                  'out': _variable_with_weight_decay('bout', [c3d_model.NUM_CLASSES], 0.000),
+                  #'bd1': _variable_with_weight_decay('bd1', [4096], 0.000),
+                  #'bd2': _variable_with_weight_decay('bd2', [4096], 0.000),
+                  #'out': _variable_with_weight_decay('bout', [c3d_model.NUM_CLASSES], 0.000),
                   }
             fcn_weights = {
-                  'wconv5': _variable_with_weight_decay('conv5', [3, 7, 7, 512, 512], 0.0005),
-                  'wdown5': _variable_with_weight_decay('down5', [1, 7, 7, 512, 512], 0.0005),
-                  'wup5': _variable_with_weight_decay('up5', [3, 1, 1, 4096, 512], 0.0005),
-                  'wconv4': _variable_with_weight_decay('conv4', [3, 7, 7, 512, 512], 0.0005),
-                  'wdown4': _variable_with_weight_decay('down4', [1, 7, 7, 512, 512], 0.0005),
-                  'wup4': _variable_with_weight_decay('up4', [3, 1, 1, 4096, 4096], 0.0005),
-                  'wup3': _variable_with_weight_decay('up3', [3, 1, 1, fcn_model.NUM_CLASSES, 4096], 0.0005),
-                  #'wconv3': _variable_with_weight_decay('dconv3', [3, 7, 7, 256,256 ], 0.0005),
-                  #'wdown3': _variable_with_weight_decay('down3', [1, 7, 7, 256,4096 ], 0.0005),
-                  #'wup3': _variable_with_weight_decay('up3', [2, 1, 1, fcn_model.NUM_CLASSES, 4096], 0.0005),
+                  'wconv6': _variable_with_weight_decay('conv6', [1, 4, 4, 512, 512], 0.005),
+                  'wup6': _variable_with_weight_decay('up6', [2, 1, 1, 4096, 512], 0.005),
+                  'wup7': _variable_with_weight_decay('up7', [2, 1, 1, 4096, 4096], 0.005),
+                  'wup8': _variable_with_weight_decay('up8', [2, 1, 1, fcn_model.NUM_CLASSES, 4096], 0.005),
                   }
             fcn_biases = {
-                  'bconv5': _variable_with_weight_decay('bconv5', [512], 0.000),
-                  'bdown5': _variable_with_weight_decay('bdown5', [512], 0.000),
-                  'bup5': _variable_with_weight_decay('bup5', [4096], 0.000),
-                  'bconv4': _variable_with_weight_decay('bconv4', [512], 0.000),
-                  'bdown4': _variable_with_weight_decay('bdown4', [512], 0.000),
-                  'bup4': _variable_with_weight_decay('bup4', [4096], 0.000),
-                  'bup3': _variable_with_weight_decay('bup3', [fcn_model.NUM_CLASSES], 0.000),
-                  #'bconv3': _variable_with_weight_decay('bconv3', [256], 0.000),
-                  #'bdown3': _variable_with_weight_decay('bdown3', [4096], 0.000),
-                  #'bup3': _variable_with_weight_decay('bup3', [fcn_model.NUM_CLASSES], 0.000),
+                  'bconv6': _variable_with_weight_decay('bconv6', [512], 0.000),
+                  'bup6': _variable_with_weight_decay('bup6', [4096], 0.000),
+                  'bup7': _variable_with_weight_decay('bup7', [4096], 0.000),
+                  'bup8': _variable_with_weight_decay('bup8', [fcn_model.NUM_CLASSES], 0.000),
                   }
         with tf.name_scope('inputs'):
             images_placeholder, labels_placeholder, keep_pro = placeholder_inputs( FLAGS.batch_size )

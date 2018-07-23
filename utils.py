@@ -36,7 +36,7 @@ def fcn_model_loss(logits, labels, batch_size):
 
     tf.summary.scalar('loss', cross_entropy_mean)
     weight_decay_loss = tf.get_collection('weightdecay_losses')
-    tf.summary.scalar('weight_decay_loss', tf.reduce_mean(weight_decay_loss) )
+    tf.summary.scalar('weight_decay_loss', tf.reduce_sum(weight_decay_loss) )
     # Calculate the total loss for the current tower.
     total_loss = (cross_entropy_mean + weight_decay_loss) 
     tf.summary.scalar('total_loss', tf.reduce_mean(total_loss) )
@@ -52,7 +52,7 @@ def c3d_model_loss(logits, labels, batch_size):
     cross_entropy_mean = cross_entropy_mean/batch_size
     tf.summary.scalar('loss', cross_entropy_mean)
     weight_decay_loss = tf.get_collection('weightdecay_losses')
-    tf.summary.scalar('weight_decay_loss', tf.reduce_mean(weight_decay_loss) )
+    tf.summary.scalar('weight_decay_loss', tf.reduce_sum(weight_decay_loss) )
     # Calculate the total loss for the current tower.
     total_loss = (cross_entropy_mean + weight_decay_loss) 
     tf.summary.scalar('total_loss', tf.reduce_mean(total_loss) )

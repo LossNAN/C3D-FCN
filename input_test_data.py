@@ -108,7 +108,7 @@ def read_clip_and_label(filename, batch_size, start_pos=-1, num_frames_per_clip=
                     crop_x = int((img.shape[0] - crop_size)/2)
                     crop_y = int((img.shape[1] - crop_size)/2)
                     img = img[crop_x:crop_x+crop_size, crop_y:crop_y+crop_size,:]
-                    img = _process_data(img)
+                    #img = _process_data(img)
                     img_datas.append(img)
                 data.append(img_datas)
 
